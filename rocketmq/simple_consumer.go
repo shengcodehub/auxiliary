@@ -55,7 +55,7 @@ func (sc *SimpleCustomer) GetConsumer(ctx context.Context, c types.Conf) (*MqSub
 func (sc *SimpleCustomer) Subscribe(d *MqSubscribe) error {
 	err := d.reader.Start()
 	if err != nil {
-		log.Fatalf("RocketMqSubscribe Start() error:%v", err)
+		log.Fatalf("RocketMqSubscribe Start error:%v", err)
 		return err
 	}
 	err = d.reader.Subscribe(d.conf.TopicConf.Default.Topic, rmqClient.NewFilterExpression("*"))
