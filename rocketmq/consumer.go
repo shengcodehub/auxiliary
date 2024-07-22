@@ -8,10 +8,10 @@ import (
 )
 
 type MqSubscribe struct {
-	reader rmqClient.SimpleConsumer
-	closed int32
-	conf   types.Conf
-	ctx    context.Context
+	Reader rmqClient.SimpleConsumer
+	Closed int32
+	Conf   types.Conf
+	Ctx    context.Context
 }
 
 type Consumer interface {

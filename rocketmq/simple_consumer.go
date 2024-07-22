@@ -46,19 +46,19 @@ func (sc *SimpleCustomer) GetConsumer(ctx context.Context, c types.Conf) (*MqSub
 		return nil, err
 	}
 
-	d.reader = consumer
-	d.conf = c
-	d.ctx = ctx
+	d.Reader = consumer
+	d.Conf = c
+	d.Ctx = ctx
 	return d, nil
 }
 
 func (sc *SimpleCustomer) Subscribe(d *MqSubscribe) error {
-	err := d.reader.Start()
+	err := d.Reader.Start()
 	if err != nil {
 		log.Fatalf("RocketMqSubscribe Start error:%v", err)
 		return err
 	}
-	err = d.reader.Subscribe(d.conf.TopicConf.Default.Topic, rmqClient.NewFilterExpression("*"))
+	err = d.Reader.Subscribe(d.Conf.TopicConf.Default.Topic, rmqClient.NewFilterExpression("*"))
 	if err != nil {
 		log.Fatalf("RocketMqSubscribe Subscribe err: %v", err)
 		return err
@@ -73,11 +73,11 @@ func (sc *SimpleCustomer) Stop(d *MqSubscribe) {
 			log.Fatalf("RocketMqSubscribe GracefulStop() error:%v", err)
 			return
 		}
-	}(d.reader)
+	}(d.Reader)
 }
 
 func (sc *SimpleCustomer) Ack(d *MqSubscribe, mv *rmqClient.MessageView) error {
-	err := d.reader.Ack(d.ctx, mv)
+	err := d.Reader.Ack(d.Ctx, mv)
 	if err != nil {
 		log.Fatalf("RocketMqSubscribe ack error:%v", err)
 		return err
@@ -86,7 +86,7 @@ func (sc *SimpleCustomer) Ack(d *MqSubscribe, mv *rmqClient.MessageView) error {
 }
 
 func (sc *SimpleCustomer) Receive(d *MqSubscribe, maxMessageNum int32, invisibleDuration time.Duration) ([]*rmqClient.MessageView, error) {
-	mvs, err := d.reader.Receive(d.ctx, maxMessageNum, invisibleDuration)
+	mvs, err := d.Reader.Receive(d.Ctx, maxMessageNum, invisibleDuration)
 	if err != nil {
 		log.Fatalf("RocketMqSubscribe Receive error:%v", err)
 		return nil, err
