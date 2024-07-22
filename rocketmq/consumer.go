@@ -1,9 +1,9 @@
 package rocketmq
 
 import (
-	"auxiliary/rocketmq/types"
 	"context"
 	rmqClient "github.com/apache/rocketmq-clients/golang/v5"
+	"github.com/shengwenjin/auxiliary/rocketmq/types"
 	"time"
 )
 
