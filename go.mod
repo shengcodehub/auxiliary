@@ -1,4 +1,4 @@
-module auxiliary
+module github.com/shengwenjin/auxiliary
 
 go 1.21.5
 
