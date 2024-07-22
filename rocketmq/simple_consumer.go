@@ -5,7 +5,7 @@ import (
 	rmqClient "github.com/apache/rocketmq-clients/golang/v5"
 	"github.com/apache/rocketmq-clients/golang/v5/credentials"
 	"github.com/shengwenjin/auxiliary/rocketmq/types"
-	"log"
+	log "github.com/sirupsen/logrus"
 	"os"
 	"time"
 )
@@ -42,7 +42,7 @@ func (sc *SimpleCustomer) GetConsumer(ctx context.Context, c types.Conf) (*MqSub
 		}),
 	)
 	if err != nil {
-		log.Fatalf("rocketmq consumer GetDefaultConsumer err: %v", err)
+		log.Errorf("rocketmq consumer GetDefaultConsumer err: %v", err)
 		return nil, err
 	}
 
@@ -55,12 +55,12 @@ func (sc *SimpleCustomer) GetConsumer(ctx context.Context, c types.Conf) (*MqSub
 func (sc *SimpleCustomer) Subscribe(d *MqSubscribe) error {
 	err := d.Reader.Start()
 	if err != nil {
-		log.Fatalf("RocketMqSubscribe Start error:%v", err)
+		log.Errorf("RocketMqSubscribe Start error:%v", err)
 		return err
 	}
 	err = d.Reader.Subscribe(d.Conf.TopicConf.Default.Topic, rmqClient.NewFilterExpression("*"))
 	if err != nil {
-		log.Fatalf("RocketMqSubscribe Subscribe err: %v", err)
+		log.Errorf("RocketMqSubscribe Subscribe err: %v", err)
 		return err
 	}
 	return nil
@@ -70,7 +70,7 @@ func (sc *SimpleCustomer) Stop(d *MqSubscribe) {
 	func(simpleConsumer rmqClient.SimpleConsumer) {
 		err := simpleConsumer.GracefulStop()
 		if err != nil {
-			log.Fatalf("RocketMqSubscribe GracefulStop() error:%v", err)
+			log.Errorf("RocketMqSubscribe GracefulStop() error:%v", err)
 			return
 		}
 	}(d.Reader)
@@ -79,7 +79,7 @@ func (sc *SimpleCustomer) Stop(d *MqSubscribe) {
 func (sc *SimpleCustomer) Ack(d *MqSubscribe, mv *rmqClient.MessageView) error {
 	err := d.Reader.Ack(d.Ctx, mv)
 	if err != nil {
-		log.Fatalf("RocketMqSubscribe ack error:%v", err)
+		log.Errorf("RocketMqSubscribe ack error:%v", err)
 		return err
 	}
 	return nil
@@ -88,7 +88,7 @@ func (sc *SimpleCustomer) Ack(d *MqSubscribe, mv *rmqClient.MessageView) error {
 func (sc *SimpleCustomer) Receive(d *MqSubscribe, maxMessageNum int32, invisibleDuration time.Duration) ([]*rmqClient.MessageView, error) {
 	mvs, err := d.Reader.Receive(d.Ctx, maxMessageNum, invisibleDuration)
 	if err != nil {
-		log.Fatalf("RocketMqSubscribe Receive error:%v", err)
+		log.Errorf("RocketMqSubscribe Receive error:%v", err)
 		return nil, err
 	}
 	return mvs, nil

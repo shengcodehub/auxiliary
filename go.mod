@@ -2,7 +2,10 @@ module github.com/shengwenjin/auxiliary
 
 go 1.21.5
 
-require github.com/apache/rocketmq-clients/golang/v5 v5.1.1-rc1
+require (
+	github.com/apache/rocketmq-clients/golang/v5 v5.1.1-rc1
+	github.com/sirupsen/logrus v1.9.3
+)
 
 require (
 	contrib.go.opencensus.io/exporter/ocagent v0.6.0 // indirect
