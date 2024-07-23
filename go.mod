@@ -12,11 +12,16 @@ require (
 	github.com/apache/rocketmq-clients/golang/v5 v5.1.1-rc1
 	github.com/bitly/go-simplejson v0.5.1
 	github.com/galaxy-book/captcha-golang-demo v0.0.0-20201023100527-4940cacacd4d
+	github.com/golang-jwt/jwt/v4 v4.5.0
+	github.com/google/uuid v1.6.0
 	github.com/json-iterator/go v1.1.12
+	github.com/oschwald/geoip2-golang v1.11.0
 	github.com/panjf2000/ants/v2 v2.10.0
 	github.com/sirupsen/logrus v1.9.3
 	github.com/zeromicro/go-zero v1.6.6
+	golang.org/x/exp v0.0.0-20240719175910-8a7402abbf56
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
+	gorm.io/gorm v1.25.11
 )
 
 require (
@@ -38,14 +43,16 @@ require (
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/mock v1.6.0 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
-	github.com/google/uuid v1.6.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.18.0 // indirect
+	github.com/jinzhu/inflection v1.0.0 // indirect
+	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/natefinch/lumberjack v2.0.0+incompatible // indirect
+	github.com/oschwald/maxminddb-golang v1.13.0 // indirect
 	github.com/spaolacci/murmur3 v1.1.0 // indirect
 	github.com/tjfoc/gmsm v1.3.2 // indirect
 	github.com/valyala/fastrand v1.1.0 // indirect
