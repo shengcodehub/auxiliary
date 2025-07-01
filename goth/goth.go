@@ -8,6 +8,7 @@ import (
 	"github.com/markbates/goth/providers/facebook"
 	"github.com/markbates/goth/providers/twitch"
 	"github.com/markbates/goth/providers/twitter"
+	"github.com/shengcodehub/auxiliary/goth/providers/instagram"
 	"github.com/shengcodehub/auxiliary/goth/providers/riot"
 	"net/http"
 )
@@ -72,7 +73,7 @@ func Setup(c Conf) {
 	goth.UseProviders(
 		discord.New(c.Discord.ClientKey, c.Discord.Secret, c.Discord.CallbackURL, c.Discord.Scopes...),
 		riot.New(c.Riot.ClientKey, c.Riot.Secret, c.Riot.CallbackURL, c.Riot.Scopes...),
-		//instagram.New(c.Instagram.ClientKey, c.Instagram.Secret, c.Instagram.CallbackURL, c.Instagram.Scopes...),
+		instagram.New(c.Instagram.ClientKey, c.Instagram.Secret, c.Instagram.CallbackURL, c.Instagram.Scopes...),
 		twitter.New(c.Twitter.ClientKey, c.Twitter.Secret, c.Twitter.CallbackURL),
 		twitch.New(c.Twitch.ClientKey, c.Twitch.Secret, c.Twitch.CallbackURL),
 		facebook.New(c.Facebook.ClientKey, c.Facebook.Secret, c.Facebook.CallbackURL, c.Facebook.Scopes...),
