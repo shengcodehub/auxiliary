@@ -369,8 +369,6 @@ github.com/segmentio/encoding v0.3.6 h1:E6lVLyDPseWEulBmCmAKPanDd3jiyGDo5gMcugCR
 github.com/segmentio/encoding v0.3.6/go.mod h1:n0JeuIqEQrQoPDGsjo8UNd1iA0U8d8+oHAA4E3G3OxM=
 github.com/segmentio/kafka-go v0.4.35 h1:TAsQ7q1SjS39PcFvU0zDJhCuVAxHomy7xOAfbdSuhzs=
 github.com/segmentio/kafka-go v0.4.35/go.mod h1:GAjxBQJdQMB5zfNA21AhpaqOB2Mu+w3De4ni3Gbm8y0=
-github.com/shengwenjin/auxiliary v1.1.0 h1:VTkyVUTjrq1a/UwodLraAQRt8n89KGLH2WLGO/mHFbQ=
-github.com/shengwenjin/auxiliary v1.1.0/go.mod h1:dGOQglMekaXnwiF9h/wK5N0Yoc4tbVyjWoKbZBqhyao=
 github.com/sirupsen/logrus v1.9.3 h1:dueUQJ1C2q9oE3F7wvmSGAaVtTmUizReu6fjN8uqzbQ=
 github.com/sirupsen/logrus v1.9.3/go.mod h1:naHLuLoDiP4jHNo9R0sCBMtWGeIprob74mVsIT4qYEQ=
 github.com/smartwalle/alipay/v3 v3.2.25 h1:cRDN+fpDWTVHnuHIF/vsJETskRXS/S+fDOdAkzXmV/Q=

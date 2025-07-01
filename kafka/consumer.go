@@ -6,7 +6,7 @@ import (
 	dioKafka "github.com/gowins/dionysus/kafka"
 	"github.com/gowins/dionysus/log"
 	"github.com/segmentio/kafka-go"
-	"github.com/shengwenjin/auxiliary/kafka/types"
+	"github.com/shengcodehub/auxiliary/kafka/types"
 	"time"
 )
 

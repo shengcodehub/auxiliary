@@ -4,7 +4,7 @@ import (
 	"context"
 	rmqClient "github.com/apache/rocketmq-clients/golang/v5"
 	"github.com/apache/rocketmq-clients/golang/v5/credentials"
-	"github.com/shengwenjin/auxiliary/rocketmq/types"
+	"github.com/shengcodehub/auxiliary/rocketmq/types"
 	log "github.com/sirupsen/logrus"
 	"os"
 	"time"

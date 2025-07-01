@@ -1,7 +1,7 @@
 package orm
 
 import (
-	"github.com/shengwenjin/auxiliary/common/env"
+	"github.com/shengcodehub/auxiliary/common/env"
 	"github.com/spf13/viper"
 	"github.com/zeromicro/go-zero/core/logx"
 	"gorm.io/driver/mysql"

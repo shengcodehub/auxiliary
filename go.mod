@@ -35,7 +35,6 @@ require (
 	github.com/oschwald/geoip2-golang v1.11.0
 	github.com/panjf2000/ants/v2 v2.10.0
 	github.com/segmentio/kafka-go v0.4.35
-	github.com/shengwenjin/auxiliary v1.1.0
 	github.com/sirupsen/logrus v1.9.3
 	github.com/smartwalle/alipay/v3 v3.2.25
 	github.com/spf13/cast v1.6.0
