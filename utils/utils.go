@@ -537,7 +537,22 @@ func FindPageList[T any](query *gorm.DB, callBack []*T, page int, pageSize int, 
 		searchKeyArr := strings.Split(searchKey, ",")
 		searchValueArr := strings.Split(searchValue, ",")
 		for k, v := range searchKeyArr {
-			query = query.Where(v+"= ? ", searchValueArr[k])
+			if strings.Contains(searchValueArr[k], "---") {
+				sel := strings.Split(searchValueArr[k], "---")
+				query = query.Where(v+" in (?) ", sel)
+			} else if strings.Contains(searchValueArr[k], ">=") {
+				query = query.Where(v+" >= ? ", strings.ReplaceAll(searchValueArr[k], ">=", ""))
+			} else if strings.Contains(searchValueArr[k], "<=") {
+				query = query.Where(v+" <= ? ", strings.ReplaceAll(searchValueArr[k], "<=", ""))
+			} else if strings.Contains(searchValueArr[k], ">") {
+				query = query.Where(v+" > ? ", strings.ReplaceAll(searchValueArr[k], ">", ""))
+			} else if strings.Contains(searchValueArr[k], "<") {
+				query = query.Where(v+" < ? ", strings.ReplaceAll(searchValueArr[k], "<", ""))
+			} else if strings.Contains(searchValueArr[k], "like") {
+				query = query.Where(v+" like ? ", strings.ReplaceAll(searchValueArr[k], "like", ""))
+			} else {
+				query = query.Where(v+" = ? ", searchValueArr[k])
+			}
 		}
 	}
 	resp = callBack
