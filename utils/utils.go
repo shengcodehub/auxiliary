@@ -10,6 +10,8 @@ import (
 	"errors"
 	"fmt"
 	"github.com/google/uuid"
+	jsoniter "github.com/json-iterator/go"
+	"github.com/shengcodehub/auxiliary/redis"
 	"github.com/zeromicro/go-zero/core/logx"
 	"gorm.io/gorm"
 	"io"
@@ -569,6 +571,108 @@ func FindPageList[T any](query *gorm.DB, callBack []*T, page int, pageSize int, 
 	}
 	query.Offset(-1).Limit(-1).Count(&count)
 	return resp, count, nil
+}
+
+func FindInfo[T any](query *gorm.DB, callBack *T, searchKey string, searchValue string, order string) (resp *T, err error) {
+	if len(searchKey) > 0 && len(searchValue) > 0 {
+		searchKeyArr := strings.Split(searchKey, ",")
+		searchValueArr := strings.Split(searchValue, ",")
+		for k, v := range searchKeyArr {
+			query = query.Where(v+"= ? ", searchValueArr[k])
+		}
+	}
+	resp = callBack
+	if len(order) > 0 {
+		query = query.Order(order)
+	}
+	err = query.First(&resp).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return callBack, nil
+		}
+		return callBack, err
+	}
+	return resp, nil
+}
+
+func GetCacheData[T any](ctx context.Context, cacheKey string, callBack T) (*T, error) {
+	cacheData, err := redis.GetCache().GetCtx(ctx, cacheKey)
+	if err != nil {
+		logx.Errorf("GetCacheData GetCache fail:%s", err.Error())
+		return nil, err
+	}
+	resp := &callBack
+	if len(cacheData) > 0 {
+		if err = jsoniter.Unmarshal([]byte(cacheData), &resp); err != nil {
+			logx.Errorf("GetCacheData Unmarshal fail:%s", err.Error())
+			return nil, err
+		}
+		return resp, nil
+	}
+	return nil, nil
+}
+
+func GetCacheDataArr[T any](ctx context.Context, cacheKey string, callBack []*T) ([]*T, error) {
+	cacheData, err := redis.GetCache().GetCtx(ctx, cacheKey)
+	if err != nil {
+		logx.Errorf("GetCacheDataArr GetCache fail:%s", err.Error())
+		return nil, err
+	}
+	resp := callBack
+	if len(cacheData) > 0 {
+		if err = jsoniter.Unmarshal([]byte(cacheData), &resp); err != nil {
+			logx.Errorf("GetCacheDataArr Unmarshal fail:%s", err.Error())
+			return nil, err
+		}
+		return resp, nil
+	}
+	return nil, nil
+}
+
+func SaveCacheData[T any](ctx context.Context, cacheKey string, cacheData T, expire int) error {
+	toString, err := jsoniter.MarshalToString(&cacheData)
+	if err != nil {
+		logx.Errorf("SaveCacheData MarshalToString fail:%s", err.Error())
+		return err
+	}
+	err = redis.GetCache().SetexCtx(ctx, cacheKey, toString, expire)
+	if err != nil {
+		logx.Errorf("SaveCacheData GetCache SetexCtx fail:%s", err.Error())
+		return err
+	}
+	return nil
+}
+
+func FindCount(query *gorm.DB, searchKey string, searchValue string) (num int64, err error) {
+	if len(searchKey) > 0 && len(searchValue) > 0 {
+		searchKeyArr := strings.Split(searchKey, ",")
+		searchValueArr := strings.Split(searchValue, ",")
+		for k, v := range searchKeyArr {
+			if strings.Contains(searchValueArr[k], "---") {
+				sel := strings.Split(searchValueArr[k], "---")
+				query = query.Where(v+" in (?) ", sel)
+			} else if strings.Contains(searchValueArr[k], ">=") {
+				query = query.Where(v+" >= ? ", strings.ReplaceAll(searchValueArr[k], ">=", ""))
+			} else if strings.Contains(searchValueArr[k], "<=") {
+				query = query.Where(v+" <= ? ", strings.ReplaceAll(searchValueArr[k], "<=", ""))
+			} else if strings.Contains(searchValueArr[k], ">") {
+				query = query.Where(v+" > ? ", strings.ReplaceAll(searchValueArr[k], ">", ""))
+			} else if strings.Contains(searchValueArr[k], "<") {
+				query = query.Where(v+" < ? ", strings.ReplaceAll(searchValueArr[k], "<", ""))
+			} else {
+				query = query.Where(v+" = ? ", searchValueArr[k])
+			}
+		}
+	}
+	err = query.Count(&num).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return 0, nil
+		}
+		logx.Errorf("utils FindCount err:%v", err)
+		return 0, err
+	}
+	return num, nil
 }
 
 func SubStringWithFormat(str string, length int, ellipsis ...bool) string {
