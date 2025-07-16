@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/streadway/amqp"
 	"github.com/zeromicro/go-zero/core/logx"
+	"strings"
 )
 
 type Conf struct {
@@ -14,6 +15,7 @@ type Conf struct {
 }
 
 var producerChannel *amqp.Channel
+var client *amqp.Connection
 
 func SetUp(c Conf) {
 	username := c.Username
@@ -29,16 +31,25 @@ func SetUp(c Conf) {
 		logx.Errorf("rabbitmq 创建连接失败: %v", err)
 		return
 	}
-	ch, err := conn.Channel()
+	client = conn
+	OpenChannel()
+}
+
+func GetCh() *amqp.Channel {
+	return producerChannel
+}
+
+func GetClient() *amqp.Connection {
+	return client
+}
+
+func OpenChannel() {
+	ch, err := GetClient().Channel()
 	if err != nil {
 		logx.Errorf("rabbitmq 打开 channel 错误: %v", err)
 		return
 	}
 	producerChannel = ch
-}
-
-func GetCh() *amqp.Channel {
-	return producerChannel
 }
 
 func QueueDeclare(queue string) (amqp.Queue, error) {
@@ -51,6 +62,10 @@ func QueueDeclare(queue string) (amqp.Queue, error) {
 		nil,   // 额外参数
 	)
 	if err != nil {
+		if strings.Contains(err.Error(), "channel/connection is not open") {
+			OpenChannel()
+			return QueueDeclare(queue)
+		}
 		logx.Errorf("rabbitmq 声明队列失败: %v", err)
 		return q, err
 	}
