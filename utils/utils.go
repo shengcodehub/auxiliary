@@ -6,6 +6,7 @@ import (
 	"context"
 	"crypto/md5"
 	"encoding/base64"
+	"encoding/csv"
 	"encoding/hex"
 	"errors"
 	"fmt"
@@ -725,4 +726,37 @@ func Ternary[T any](condition bool, a, b T) T {
 		return a
 	}
 	return b
+}
+
+func ExportCSV(w *http.ResponseWriter, headers *[]string, data *[][]string) error {
+
+	// 创建CSV写入器
+	csvWriter := csv.NewWriter(*w)
+	defer csvWriter.Flush()
+
+	// 写入CSV文件头部
+	if headers != nil {
+		err := csvWriter.Write(*headers)
+		if err != nil {
+			return err
+		}
+	}
+
+	// 写入数据到CSV文件
+	for _, row := range *data {
+		err := csvWriter.Write(row)
+		if err != nil {
+			return err
+		}
+	}
+
+	// 确保写入所有的数据
+	csvWriter.Flush()
+
+	// 检查错误
+	if err := csvWriter.Error(); err != nil {
+		return err
+	}
+
+	return nil
 }
