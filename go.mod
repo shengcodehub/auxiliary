@@ -40,6 +40,7 @@ require (
 	github.com/spf13/cast v1.6.0
 	github.com/spf13/viper v1.19.0
 	github.com/streadway/amqp v1.1.0
+	github.com/volcengine/ve-tos-golang-sdk/v2 v2.7.18
 	github.com/wechatpay-apiv3/wechatpay-go v0.2.20
 	github.com/zeromicro/go-zero v1.6.6
 	golang.org/x/exp v0.0.0-20240719175910-8a7402abbf56
